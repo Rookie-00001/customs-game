@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海关执法官：行李检查实战</title>
+    
+    <!-- 网页图标设置 -->
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="shortcut icon" href="logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="apple-touch-icon-precomposed" href="logo.png">
+    
+    <link rel="icon" type="image/png" sizes="96x96" href="logo.png">
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="header-bar" id="header-bar" style="display: none;">
+            <div class="officer-info">
+                <span class="badge">⚖️ 海关执法官</span>
+                <button class="pause-btn" onclick="showPauseMenu()">
+                    <span>■</span>
+                    <span>暂停</span>
+                </button>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span>✅</span>
+                    <span id="correct-checks">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>❌</span>
+                    <span id="missed-items">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>🎯</span>
+                    <span id="accuracy">100%</span>
+                </div>
+                <div class="stat-item">
+                    <span>⏰</span>
+                    <span id="case-timer">00:40</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-workspace">
+            <!-- 主界面 -->
+            <div class="screen active" id="main-menu">
+                <div class="main-menu">
+                    <div class="menu-content">
+                        <div class="game-logo">⚖️ 海关执法官</div>
+                        <div class="game-subtitle">行李检查实战模拟系统</div>
+                        
+                        <div class="feature-showcase">
+                            <div class="feature-card">
+                                <span class="feature-icon">🎯</span>
+                                <div class="feature-title">真实体验</div>
+                                <div class="feature-desc">模拟真实海关执法流程</div>
+                            </div>
+                            <div class="feature-card">
+                                <span class="feature-icon">💡</span>
+                                <div class="feature-title">智能挑战</div>
+                                <div class="feature-desc">随机案例训练</div>
+                            </div>
+                            <div class="feature-card">
+                                <span class="feature-icon">📚</span>
+                                <div class="feature-title">反走私教育</div>
+                                <div class="feature-desc">学习反走私知识</div>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-buttons">
+                            <button class="menu-btn start" onclick="startInspection()">
+                                <span class="btn-icon">▶️</span>
+                                <span>开始执法任务</span>
+                            </button>
+                            <button class="menu-btn" onclick="showKnowledge()">
+                                <span class="btn-icon">📚</span>
+                                <span>反走私知识</span>
+                            </button>
+                            <!-- 新增重置按钮 -->
+                            <button class="menu-btn reset" onclick="LevelManager.confirmReset()" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                                <span class="btn-icon">⟳</span>
+                                <span>重置数据</span>
+                            </button>
+                            <button class="menu-btn" onclick="showAbout()">
+                                <span class="btn-icon">ℹ️</span>
+                                <span>关于系统</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 知识界面 -->
+            <div class="screen" id="knowledge-screen">
+                <div class="knowledge-screen">
+                    <div class="knowledge-content">
+                        <div class="knowledge-title">📚 反走私普法知识</div>
+                        <div class="knowledge-subtitle">全民反走私，你我齐参与</div>
+                        
+                        <div class="knowledge-section">
+                            <div class="knowledge-section-title">
+                                <span>🚨</span>
+                                <span>什么是走私</span>
+                            </div>
+                            <div class="knowledge-section-content">
+                                走私，是指违反《中华人民共和国海关法》及相关法律、行政法规，逃避海关监管，偷逃应纳税款、逃避国家有关进出境的禁止性或者限制性管理的行为。
+                            </div>
+                        </div>
+
+                        <div class="knowledge-section">
+                            <div class="knowledge-section-title">
+                                <span>📦</span>
+                                <span>常见走私物品</span>
+                            </div>
+                            <div class="knowledge-section-content">
+                                <div class="knowledge-item">
+                                    <strong>1. 成品油、烟草、奢侈品、化妆品、药品等</strong>
+                                </div>
+                                <div class="knowledge-item">
+                                    <strong>2. 冻猪肉、冻牛肉、冻羊肉、冻鸡肉、冻水产品等冻品类</strong>
+                                </div>
+                                <div class="knowledge-item">
+                                    <strong>3. 大米、玉米等粮食类</strong>
+                                </div>
+                                <div class="knowledge-item">
+                                    <strong>4. 电脑、手机、集成电路等电子产品</strong>
+                                </div>
+                                <div class="knowledge-item">
+                                    <strong>5. 旧服装、固体废物等洋垃圾</strong>
+                                </div>
+                                <div class="knowledge-item">
+                                    <strong>6. 毒品、枪支及其散件、弹药等</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="knowledge-section">
+                            <div class="knowledge-section-title">
+                                <span>⚖️</span>
+                                <span>主要走私犯罪罪名</span>
+                            </div>
+                            <div class="knowledge-section-content">
+                                <div class="crime-item">
+                                    <div class="crime-title">走私武器、弹药罪</div>
+                                    <div class="crime-desc">违反海关法规、逃避海关监管，非法携带、运输、邮寄武器、弹药进出国（边）境的行为。</div>
+                                </div>
+                                <div class="crime-item">
+                                    <div class="crime-title">走私毒品罪</div>
+                                    <div class="crime-desc">违反海关法规，逃避海关监管，非法运输、携带、邮寄毒品进出国（边）境的行为。</div>
+                                </div>
+                                <div class="crime-item">
+                                    <div class="crime-title">走私珍贵动物、珍贵动物制品罪</div>
+                                    <div class="crime-desc">违反海关法规，逃避海关监管，非法携带、运输、邮寄珍贵动物、珍贵动物制品进出国（边）境的行为。</div>
+                                </div>
+                                <div class="crime-item">
+                                    <div class="crime-title">走私普通货物、物品罪</div>
+                                    <div class="crime-desc">违反海关法规，偷逃关税，情节严重的行为。包括超量携带烟草、奢侈品等。</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="knowledge-section">
+                            <div class="knowledge-section-title">
+                                <span>🛡️</span>
+                                <span>个人如何防范走私</span>
+                            </div>
+                            <div class="knowledge-section-content">
+                                <div class="knowledge-item">
+                                    <strong>1. 增强法律意识：</strong>要充分认识到走私是违法犯罪行为，不参与任何形式的走私活动。
+                                </div>
+                                <div class="knowledge-item">
+                                    <strong>2. 抵制走私行为：</strong>坚决抵制"走私、贩私、买私、用私"行为，通过合法正规渠道购买商品。
+                                </div>
+                                <div class="knowledge-item">
+                                    <strong>3. 勇于监督举报：</strong>发现走私犯罪活动线索，及时向海关举报。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="knowledge-section">
+                            <div class="knowledge-section-title">
+                                <span>📞</span>
+                                <span>举报方式</span>
+                            </div>
+                            <div class="knowledge-section-content">
+                                <div class="knowledge-item" style="background: rgba(231,76,60,0.1); border-left-color: #e74c3c; color: #e74c3c; font-weight: bold;">
+                                    <strong>🚨 海关举报电话：12360</strong>
+                                </div>
+                                <div class="knowledge-item">
+                                    发现走私违法犯罪线索，请及时拨打海关举报电话，共同维护国家经济安全！
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center;">
+                            <button class="back-btn" onclick="returnToMainMenu()">🏠 返回主菜单</button>
+                            <button class="back-btn game" id="return-game-btn" onclick="resumeGame()" style="display: none;">🎮 返回游戏</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 游戏界面 -->
+            <div class="screen" id="inspection-screen">
+                <div class="inspection-workspace">
+                    <!-- 旅客信息模块 -->
+                    <div class="passenger-module">
+                        <div class="passenger-info-section">
+                            <div class="passenger-avatar" id="passenger-avatar">
+                                👤
+                                <div class="speech-bubble" id="speech-bubble">
+                                    <!-- 旅客回答内容 -->
+                                </div>
+                            </div>
+                            <div class="passenger-details">
+                                <div class="passenger-name" id="passenger-name">旅客姓名</div>
+                                <div class="passenger-from" id="passenger-from">来自：未知</div>
+                                <div class="nervousness-meter">
+                                    <div class="nervousness-label">紧张程度: <span id="nervousness-level">正常</span></div>
+                                    <div class="nervousness-bar">
+                                        <div class="nervousness-fill" id="nervousness-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="behavior-section">
+                            <div class="behavior-title">🔍 行为观察</div>
+                            <div id="behavior-list">
+                                <!-- 动态生成行为指标 -->
+                            </div>
+                            
+                            <div class="question-section">
+                                <div class="behavior-title">❓ 询问旅客</div>
+                                <button class="question-btn" onclick="askQuestion('purpose')" id="q-purpose">此行目的？</button>
+                                <button class="question-btn" onclick="askQuestion('duration')" id="q-duration">停留时间？</button>
+                                <button class="question-btn" onclick="askQuestion('items')" id="q-items">携带物品？</button>
+                                <button class="question-btn" onclick="askQuestion('declaration')" id="q-declaration">是否申报？</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 行李检查模块 -->
+                    <div class="luggage-module">
+                        <div class="inspection-toolbar">
+                            <div class="tool-group">
+                                <button class="tool-btn" id="xray-btn" onclick="performXRay()">
+                                    📡 X光检查
+                                </button>
+                            </div>
+                            
+                            <div class="decision-panel">
+                                <button class="decision-btn pass-btn" onclick="makeDecision('pass')" disabled id="pass-btn">
+                                    ✅ 放行
+                                </button>
+                                <button class="decision-btn inspect-btn" onclick="makeDecision('inspect')" disabled id="inspect-btn">
+                                    🔍 检查
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="luggage-workspace">
+                            <!-- 进度面板 -->
+                            <div class="progress-panel">
+                                <div class="progress-title">检查进度 (<span id="case-progress">1/5</span>)</div>
+                                <div class="progress-steps">
+                                    <div class="progress-step active" id="step-xray">
+                                        <div class="progress-icon">1</div>
+                                        <span>X光检查</span>
+                                    </div>
+                                    <div class="progress-step" id="step-decision">
+                                        <div class="progress-icon">2</div>
+                                        <span>初步判断</span>
+                                    </div>
+                                    <div class="progress-step" id="step-inspect">
+                                        <div class="progress-icon">3</div>
+                                        <span>开箱检查</span>
+                                    </div>
+                                    <div class="progress-step" id="step-final">
+                                        <div class="progress-icon">4</div>
+                                        <span>最终决定</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="luggage-container">
+                                <div class="luggage-box" id="luggage-box">
+                                    <div class="luggage-lid" id="luggage-lid">行李箱</div>
+                                    <div class="luggage-content" id="luggage-content">
+                                        <!-- 动态生成行李物品 -->
+                                    </div>
+                                    
+                                    <!-- X光视图 -->
+                                    <div class="x-ray-view" id="x-ray-view">
+                                        <!-- 动态生成X光图像 -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 扫描特效 -->
+                            <div class="scanner-overlay" id="scanner-overlay">
+                                <div class="scanner-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 开箱检查界面 -->
+            <div class="screen" id="inspection-detail-screen">
+                <div class="inspection-workspace">
+                    <!-- 旅客信息模块（复用） -->
+                    <div class="passenger-module">
+                        <div class="passenger-info-section">
+                            <div class="passenger-avatar" id="passenger-avatar-detail">
+                                👤
+                                <div class="speech-bubble" id="speech-bubble-detail">
+                                    <!-- 旅客回答内容 -->
+                                </div>
+                            </div>
+                            <div class="passenger-details">
+                                <div class="passenger-name" id="passenger-name-detail">旅客姓名</div>
+                                <div class="passenger-from" id="passenger-from-detail">来自：未知</div>
+                                <div class="nervousness-meter">
+                                    <div class="nervousness-label">紧张程度: <span id="nervousness-level-detail">正常</span></div>
+                                    <div class="nervousness-bar">
+                                        <div class="nervousness-fill" id="nervousness-fill-detail"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="behavior-section">
+                            <div class="behavior-title">🔍 行为观察</div>
+                            <div id="behavior-list-detail">
+                                <!-- 动态生成行为指标 -->
+                            </div>
+                            
+                            <div class="question-section">
+                                <div class="behavior-title">❓ 询问旅客</div>
+                                <button class="question-btn" onclick="askQuestionDetail('purpose')" id="q-purpose-detail">此行目的？</button>
+                                <button class="question-btn" onclick="askQuestionDetail('duration')" id="q-duration-detail">停留时间？</button>
+                                <button class="question-btn" onclick="askQuestionDetail('items')" id="q-items-detail">携带物品？</button>
+                                <button class="question-btn" onclick="askQuestionDetail('declaration')" id="q-declaration-detail">是否申报？</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 开箱检查模块 -->
+                    <div class="luggage-module">
+                        <div class="inspection-toolbar">
+                            <div class="tool-group">
+                                <button class="tool-btn active">
+                                    🔍 开箱检查中
+                                </button>
+                            </div>
+                            
+                            <div class="decision-panel">
+                                <button class="decision-btn pass-btn" onclick="makeFinalDecision('pass')" id="final-pass-btn">
+                                    ✅ 放行
+                                </button>
+                                <button class="decision-btn detain-btn" onclick="makeFinalDecision('detain')" id="final-detain-btn">
+                                    🚫 扣留
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="luggage-workspace">
+                            <div class="luggage-container">
+                                <div class="luggage-box opened" id="luggage-box-detail">
+                                    <div class="luggage-lid" id="luggage-lid-detail" style="transform: rotateX(-125deg) translateZ(10px);"></div>
+                                    <div class="luggage-content" id="luggage-content-detail" style="opacity: 1;">
+                                        <!-- 动态生成行李物品 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 暂停模态框 -->
+        <div class="pause-modal" id="pause-modal">
+            <div class="pause-content">
+                <div class="pause-title">⚠️ 游戏暂停</div>
+                <div class="pause-buttons">
+                    <button class="pause-btn-item continue" onclick="resumeGame()">
+                        <span>▶️</span>
+                        <span>继续游戏</span>
+                    </button>
+                    <button class="pause-btn-item knowledge" onclick="showKnowledgeFromPause()">
+                        <span>📚</span>
+                        <span>查看知识</span>
+                    </button>
+                    <button class="pause-btn-item restart" onclick="PauseManager.restartGameFromPause()">
+                        <span>⟳</span>
+                        <span>重新开始</span>
+                    </button>
+                    <button class="pause-btn-item back" onclick="returnToMainMenuFromPause()">
+                        <span>🏠</span>
+                        <span>返回主菜单</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果模态框 -->
+        <div class="result-modal" id="result-modal">
+            <div class="result-content">
+                <div class="result-icon" id="result-icon">🎯</div>
+                <div class="result-title" id="result-title">检查结果</div>
+                <div class="result-description" id="result-description">结果描述</div>
+                <div id="result-buttons">
+                    <button class="continue-btn" onclick="nextCase()">继续下一个案例</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 文件引入 -->
+    <script src="js/config/gameConfig.js"></script>
+    <script src="js/config/casesData.js"></script>
+    <script src="js/core/gameState.js"></script>
+    <script src="js/core/utils.js"></script>
+    <script src="js/managers/caseManager.js"></script>
+    <script src="js/managers/passengerManager.js"></script>
+    <script src="js/managers/luggageManager.js"></script>
+    <script src="js/managers/xrayManager.js"></script>
+    <script src="js/managers/questionManager.js"></script>
+    <script src="js/managers/decisionManager.js"></script>
+    <script src="js/managers/scoreManager.js"></script>
+    <script src="js/managers/gameResultManager.js"></script>
+    <script src="js/managers/timerManager.js"></script>
+    <script src="js/managers/workflowManager.js"></script>
+    <script src="js/managers/uiManager.js"></script>
+    <script src="js/managers/pauseManager.js"></script>
+    <script src="js/controllers/gameController.js"></script>
+    <script src="js/main.js"></script>
+    <!-- 在现有的 script 标签后添加这些新的管理器 -->
+    <script src="js/managers/difficultyManager.js"></script>
+    <script src="js/managers/specialEventManager.js"></script>
+    <script src="js/managers/levelManager.js"></script>
+</body>
+</html>
