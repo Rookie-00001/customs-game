@@ -63,7 +63,7 @@ customs-game/
 
 ### 在线打开
 
-[海关执法官：行李检查实战模拟系统]([https://markdown.com.cn](https://rookie-00001.github.io/customs-game/))
+[海关执法官：行李检查实战模拟系统](https://rookie-00001.github.io/customs-game/ "点击进入")
 
 ### 本地运行
 
