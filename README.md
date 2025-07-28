@@ -61,6 +61,10 @@ customs-game/
 
 ## 安装与运行
 
+### 在线打开
+
+[海关执法官：行李检查实战模拟系统]([https://markdown.com.cn](https://rookie-00001.github.io/customs-game/))
+
 ### 本地运行
 
 可在代码编辑器（如VScode）中使用Live Server 插件使用本地打开。
