@@ -22,6 +22,7 @@
 - **兼容性**：支持现代浏览器
 
 ## 项目结构
+```
 customs-game/
 ├── index.html # 主页面
 ├── css/
@@ -56,6 +57,7 @@ customs-game/
 │ └── controllers/
 │ └── gameController.js # 游戏控制器
 └── README.md
+```
 
 ## 安装与运行
 
